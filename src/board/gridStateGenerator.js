@@ -4,12 +4,12 @@ import piece from './piece'
 
 function GridStateGenerator() {
   const [clicked, setClicked] = useState({});
+  const [lastClicked, setLastClicked] = useState({});
   const initialPieces = [
     piece({q: 0, r:1, s:-1}, 'knight', setClicked),
     piece({q: 0, r:-1, s:1}, 'archer', setClicked)
   ]
 
-  const [lastClicked, setLastClicked] = useState({});
   const [hexagons, setHexagons] = useState(GridGenerator.hexagon(3)
     .map(hex => {return {position:{q:hex.q, r:hex.r, s:hex.s}, pattern:'', type:'ground', onClick:() => {
         setClicked({position: {q:hex.q, r:hex.r, s:hex.s}, type:'ground'})
@@ -23,10 +23,6 @@ function GridStateGenerator() {
     if(lastClicked.type!='ground' && clicked.type=='ground') movePiece(lastClicked.type)
     setLastClicked(clicked)
   }, [clicked]);
-
-  // useEffect(() => {
-  //   console.log(lastClicked)
-  // }, [lastClicked]);
 
   function isOccupied(hexPosition, positions){
     return !!positions.find(position => hexPosition.q==position.q && hexPosition.r==position.r && hexPosition.s==position.s)
@@ -47,7 +43,6 @@ function GridStateGenerator() {
       return hex
     }))
   }
-
 
   return (
       <HexGrid width={1200} height={1000}>
